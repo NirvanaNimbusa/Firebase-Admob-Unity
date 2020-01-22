@@ -1,6 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using UnityEngine;
 using System.Collections;
-using UnityEngine;
+using System.Runtime.InteropServices;
 namespace com.google.game
 {
     public class FirebaseAnalytic
@@ -18,27 +18,25 @@ namespace com.google.game
         }
 
 #if UNITY_IOS
-
-
-        [DllImport("__Internal")]
+         [DllImport("__Internal")]
         private static extern void _kmconfigFirebase();
         private void preInit()
+		{
+           _kmconfigFirebase();
+		}
+         [DllImport("__Internal")]
+        private static extern void _kmlogEvent(string name,string json);
+		  public void logEvent(string name, string jsonObjectString)
         {
-            _kmconfigFirebase();
+            _kmlogEvent(name,jsonObjectString);
         }
-        [DllImport("__Internal")]
-        private static extern void _kmlogEvent(string name, string json);
-        public void logEvent(string name, string jsonObjectString)
+         [DllImport("__Internal")]
+        private static extern void _kmsetUserProperty(string key,string value);
+        public void setUserProperty(string name,string value)
         {
-            _kmlogEvent(name, jsonObjectString);
+            _kmsetUserProperty(name,value);
         }
-        [DllImport("__Internal")]
-        private static extern void _kmsetUserProperty(string key, string value);
-        public void setUserProperty(string name, string value)
-        {
-            _kmsetUserProperty(name, value);
-        }
-        [DllImport("__Internal")]
+         [DllImport("__Internal")]
         private static extern void _kmsetUserID(string id);
         public void setUserId(string userID)
         {
@@ -47,20 +45,20 @@ namespace com.google.game
 
         public void setSessionTimeoutDuration(long milliseconds)
         {
-
+            
         }
 
         public void setMinimumSessionDuration(long milliseconds)
         {
-
+            
         }
         [DllImport("__Internal")]
         private static extern void _kmsetAnalyticsCollectionEnabled(bool id);
         public void setAnalyticsCollectionEnabled(bool enable)
         {
             _kmsetAnalyticsCollectionEnabled(enable);
-        }
-
+        }  
+        
 #elif UNITY_ANDROID
         private AndroidJavaObject jobject;
         private void preInit()
@@ -74,34 +72,40 @@ namespace com.google.game
 
         public void logEvent(string name, string jsonObjectString)
         {
+             if(jobject!=null)
             jobject.Call("logEvent", new object[] { name,jsonObjectString });
         }
         public void setUserProperty(string name,string value)
         {
+         if(jobject!=null)
             jobject.Call("setUserProperty",new object[]{name,value});
         }
         public void setUserId(string userID)
         {
+         if(jobject!=null)
             jobject.Call("setUserId",userID);
         }
 
         public void setSessionTimeoutDuration(long milliseconds)
         {
+         if(jobject!=null)
             jobject.Call("setSessionTimeoutDuration",milliseconds);
         }
 
         public void setMinimumSessionDuration(long milliseconds)
         {
+         if(jobject!=null)
             jobject.Call("setMinimumSessionDuration", milliseconds);
         }
 
         public void setAnalyticsCollectionEnabled(bool enable)
         {
+         if(jobject!=null)
             jobject.Call("setAnalyticsCollectionEnabled",enable);
         }
        
 #elif UNITY_EDITOR
-        private void preInit()
+		private void preInit()
 		{
 		}
 

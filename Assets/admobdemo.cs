@@ -8,10 +8,15 @@ public class admobdemo : MonoBehaviour {
 	string interstitialID="";
 	string videoID="";
 	string nativeBannerID = "";
-	
-	void Start () {
+    void Awake()
+    {
+        Debug.Log("Awake is called!----------");
+        initAdmob();
+    }
+
+    void Start () {
         Debug.Log("start unity demo-------------");
-         initAdmob();
+        
 	}
 	
 	void Update () {
@@ -36,21 +41,26 @@ public class admobdemo : MonoBehaviour {
 				 nativeBannerID = "ca-app-pub-3940256099942544/2247696110";
 #endif
         AdProperties adProperties = new AdProperties();
-        adProperties.isTesting = true;
+        adProperties.isTesting(false);
+        adProperties.isAppMuted(true);
+        adProperties.isUnderAgeOfConsent(false);
+        adProperties.appVolume(100);
+        adProperties.maxAdContentRating(AdProperties.maxAdContentRating_G);
+        string[] keywords = { "diagram", "league", "brambling" };
+        adProperties.keyworks(keywords);
 
         ad = Admob.Instance();
         ad.bannerEventHandler += onBannerEvent;
         ad.interstitialEventHandler += onInterstitialEvent;
         ad.rewardedVideoEventHandler += onRewardedVideoEvent;
         ad.nativeBannerEventHandler += onNativeBannerEvent;
-        ad.initSDK(appID,adProperties);//reqired,adProperties can been null
+        ad.initSDK(adProperties);//reqired,adProperties can been null
 
         FirebaseAnalytic firebase=FirebaseAnalytic.Instance();//init and start analysis
         firebase.logEvent("startevent", "{\"player\":\"yingke\"}");
         firebase.setUserId("232324432");
         firebase.setUserProperty("age", "20");
         firebase.setAnalyticsCollectionEnabled(true);
-        
     }
 	void OnGUI(){
         if (GUI.Button(new Rect(120, 0, 100, 60), "showInterstitial"))
@@ -65,7 +75,7 @@ public class admobdemo : MonoBehaviour {
                 ad.loadInterstitial(interstitialID);
             }
         }
-        if (GUI.Button(new Rect(240, 0, 100, 60), "showRewardVideo"))
+        if (GUI.Button(new Rect(0, 0, 100, 60), "showRewardVideo"))
         {
             Debug.Log("touch video button -------------");
             if (ad.isRewardedVideoReady())

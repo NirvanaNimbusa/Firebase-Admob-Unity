@@ -12,7 +12,8 @@ required for displaying ads.
   <!-- Google Mobile Ads Permissions -->
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   
-  
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
+    <uses-permission android:name="android.permission.OBSERVE_GRANT_REVOKE_PERMISSIONS" />
   <uses-permission android:name="android.permission.INTERNET" />
   
   <!-- Uncomment to add billing for in-app purchase ads -->

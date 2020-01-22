@@ -6,8 +6,8 @@ You can use it for Unity iOS and Android App with the same c# or js code.It supp
 
 ## Google Firebase Unity Admob Plugin Features
 Platforms supported in one plugin :
-- [x] Android, Based Admob SDK v17.0.0 (part of Google Firebase service)
-- [x] iOS, via SDK v7.35.1
+- [x] Android, Based Admob SDK v18.3.0 (part of Google Firebase service)
+- [x] iOS, via SDK v7.53.1
 - [x] Support all native events
 - [x] AdRequest targeting methods,such as children target,test mode
 - [x] Not need change Android package name
@@ -37,14 +37,15 @@ or Download all the Unity admob plugin project https://github.com/unity-plugins/
    to check for any conflicts with files.
 5. Edit AndroidManifest.xml change the appid to your
 6. Edit /res/values/strings.xml change google_app_id to your
-7. Unzip GoogleMobileAds.framework.zip to GoogleMobileAds.framework
-8. Replace GoogleService-Info.plist with your file ,and add this this to your xcode project
+7. Replace GoogleService-Info.plist with your file ,and add this this to your xcode project
+8. Edit Info.plist Add Google Admob id
 9. Add other link flag -ObjC in xcode project
 
 
 ## Unity Plugin Wiki and Documentation
 * [API](https://github.com/unity-plugins/Firebase-Admob-Unity/wiki/Admob-Unity-Plugin-API)
 * [Tutorial](https://github.com/unity-plugins/Firebase-Admob-Unity/wiki)
+* [Admob Doc](https://github.com/unity-plugins/Unity-Admob)
 
 ## Quick Start
 ### Google Firebase Analyze
@@ -57,10 +58,10 @@ or Download all the Unity admob plugin project https://github.com/unity-plugins/
        // firebase.setAnalyticsCollectionEnabled(true);
 
 #### 1.Init Firebase Admob Unity Plugin 
-Create A C# script ,drag the script to a object on scene , add the follow code in the script file
+Create A C# script ,drag the script to a object on scene , add the follow code in the script file,new version admob required configurate app id in info.plist and  AndroidManifest
 ```
     using admob;
-    Admob.Instance().initSDK("admob id", new AdProperties());//admob id with format ca-app-pub-279xxxxxxxx~xxxxxxxx
+    Admob.Instance().initSDK(new AdProperties());//admob id with format ca-app-pub-279xxxxxxxx~xxxxxxxx
 
 ```
 #### 2.Add Admob Banner in Unity App 
@@ -102,11 +103,13 @@ In addition to constants on _AdSize_, you can also create a custom size:
 If you want to test the ads ,non personalize ads,set tag for family or set tag for  children market,you can set with admob unity plugin easy
 ```
         AdProperties adProperties = new AdProperties();
-        adProperties.isTesting = true;
-        adProperties.isForChildDirectedTreatment=true;
-        //adProperties.isUnderAgeOfConsent=true;
-        adProperties.isAppMuted=true;
-        adProperties.nonPersonalizedAdsOnly=true;
+        adProperties.isTesting(false);
+        adProperties.isAppMuted(true);
+        adProperties.isUnderAgeOfConsent(false);
+        adProperties.appVolume(100);
+        adProperties.maxAdContentRating(AdProperties.maxAdContentRating_G);
+        string[] keywords = { "diagram", "league", "brambling" };
+        adProperties.keyworks(keywords);
 ```
 #### 7.Ad Events
 Both _Banner_ and _Interstitial_ contain the same ad events that you can
@@ -129,7 +132,7 @@ You only need to register for the events you care about.
 
 Here is the minimal  code to create an admob video.
 ```
-    Admob.Instance().loadRewardedVideo("ca-app-pub-312xxxxxxxxxxxx/xxxxxxxx"); 
+    Admob.Instance().loadRewardedVideo("ca-app-pub-xxxxxxxxxxxxx/xxxxxxxxxxxx"); 
 ```
 Simular with interstitial,video need to be explicitly shown at an appropriate
 stopping point in your app, check that the video is ready before
