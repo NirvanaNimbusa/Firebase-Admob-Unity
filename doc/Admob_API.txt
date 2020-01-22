@@ -26,8 +26,8 @@ delegate to handler admob native express banner [event](#public-class-admobevent
 * `public static Admob Instance()`  
 Method to get Admob unique instance
 
-* `public void initAdmob(string bannerID, string InterstitialID)`  
-init admob,banner ID and InterstitialID is format ca-app-pub-27960468906xxx/xxxx67388 got from www.admob.com
+* `public void initSDK(AdProperties adProperties)`  
+init admob
  
 * `public void showBannerAbsolute(AdSize size, int x, int y)`  
 show admob at absolute position,size can been any const of [AdSize](#public-class-adsize) such as AdSize.Banner
